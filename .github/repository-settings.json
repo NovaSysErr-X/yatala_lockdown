@@ -1,0 +1,56 @@
+{
+  "name": "yatala_lockdown",
+  "description": "YATALA LOCKDOWN: Adelaide Northern Suburbs Prison Simulation - An authentic Australian prison survival game",
+  "private": false,
+  "has_issues": true,
+  "has_projects": false,
+  "has_wiki": false,
+  "has_downloads": false,
+  "default_branch": "main",
+  "allow_squash_merge": true,
+  "allow_merge_commit": false,
+  "allow_rebase_merge": false,
+  "delete_branch_on_merge": true,
+  "security_and_analysis": {
+    "advanced_security": true,
+    "secret_scanning": true,
+    "secret_scanning_push_protection": true,
+    "dependabot_security_updates": true,
+    "dependabot_alerts": true
+  },
+  "vulnerability_alerts": true,
+  "automated_security_fixes": true,
+  "pages": {
+    "build_type": "legacy",
+    "source": {
+      "branch": "gh-pages",
+      "path": "/docs"
+    }
+  },
+  "topics": [
+    "game",
+    "python",
+    "terminal",
+    "simulation",
+    "prison",
+    "adelaide",
+    "australia",
+    "text-based",
+    "cli-game"
+  ],
+  "license": {
+    "key": "mit",
+    "name": "MIT License",
+    "spdx_id": "MIT",
+    "url": "https://api.github.com/licenses/mit",
+    "node_id": "MDc6TGljZW5zZTE="
+  },
+  "archived": false,
+  "disabled": false,
+  "visibility": "public",
+  "security_policy": "SECURITY_POLICY.md",
+  "code_of_conduct": null,
+  "contributing": null,
+  "issue_template": "ISSUE_TEMPLATE.md",
+  "pull_request_template": "PULL_REQUEST_TEMPLATE.md"
+}

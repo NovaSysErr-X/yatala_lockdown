@@ -1,0 +1,73 @@
+name: Security Protection
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  security-scan:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+        
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+        
+    - name: Install security tools
+      run: |
+        pip install bandit safety semgrep
+        
+    - name: Run Bandit security scan
+      run: |
+        bandit -r src/ -f json -o bandit-report.json || true
+        
+    - name: Run Safety dependency check
+      run: |
+        safety check --json --output safety-report.json || true
+        
+    - name: Run Semgrep security scan
+      run: |
+        semgrep --config=auto --json --output=semgrep-report.json src/ || true
+        
+    - name: Check for secrets
+      uses: trufflesecurity/trufflehog@main
+      with:
+        path: ./
+        base: main
+        head: HEAD
+        
+    - name: Verify copyright headers
+      run: |
+        python3 .github/scripts/check_copyright.py
+        
+    - name: Generate security report
+      run: |
+        echo "# Security Scan Report" > security-report.md
+        echo "Generated on: $(date)" >> security-report.md
+        echo "" >> security-report.md
+        echo "## Bandit Results" >> security-report.md
+        cat bandit-report.json 2>/dev/null || echo "No issues found" >> security-report.md
+        echo "" >> security-report.md
+        echo "## Safety Results" >> security-report.md
+        cat safety-report.json 2>/dev/null || echo "No issues found" >> security-report.md
+        echo "" >> security-report.md
+        echo "## Semgrep Results" >> security-report.md
+        cat semgrep-report.json 2>/dev/null || echo "No issues found" >> security-report.md
+        
+    - name: Upload security artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: security-reports
+        path: |
+          bandit-report.json
+          safety-report.json
+          semgrep-report.json
+          security-report.md
